@@ -1,0 +1,52 @@
+body {
+   background-color: green;
+}
+
+.table {display: table;}
+.row {display: table-row;}
+.cell{display: table-cell;}
+
+#mainTable {
+   background-color: black;
+   height: 100%;
+   width: 100%;
+}
+
+#playField {
+   background-color: deepskyblue;
+   border: 5px solid red;
+   /* padding: 5px; */
+   height: 80%;
+}
+
+#controlField {
+   background-color: mediumblue;
+   border: 5px solid red;
+   /* padding: 5px; */
+   height: 20%;
+}
+
+#startButton {
+   color: whitesmoke;
+   font-size: 20px; /* change button size */
+   padding: 12px 28px;
+   margin-left: auto;
+   margin-right: auto;
+   background-color: dimgray;
+   border: 2px solid whitesmoke;
+   border-radius: 8px;
+   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.debugInfo {
+
+}
+
+.myTable {
+   width: 100%;
+   background-color: blue;
+   border: 1px solid black;
+   padding: 5px;
+   margin-left: auto;
+   margin-right: auto;
+}

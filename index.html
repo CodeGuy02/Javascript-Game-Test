@@ -1,16 +1,28 @@
 <html>
 
-<head> 
-	<script type="text/javascript" src="https://kaboomjs.com/lib/0.5.1/kaboom.js"></script>
-	<script type="text/javascript" src="gameTest01.js"> </script>
-	<script type=module></script>
+	<head> 
+        <title> Web App - Game Test </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="https://kaboomjs.com/lib/0.5.1/kaboom.js"></script>
+		<script type="text/javascript" src="gameTest01.js"> </script>
+		<link rel="stylesheet" href="gameTest01.css">
+		<script type=module></script>
+	</head>
 
-</head>
+	<body>
 
-<body>
 
-<button onclick="first()">Start Game</button>
+	<div class="table" id="mainTable">
+		<div class="row">
+			<div class="cell" id="playField"></div>
+		</div>
+		<div class="row">
+			<div class="cell" id="controlField">
+				<button onclick="first()" id="startButton"> Start Game </button>
+			</div>
+		</div>
+	</div>
 
-</body>
+	</body>
 
 </html>
