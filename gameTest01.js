@@ -37,8 +37,10 @@ k.scene("main", () => {
     //k.loadRoot("https://cors-anywhere.herokuapp.com/https://github.com/CodeGuy02/Javascript-Game-Test/tree/364b4279d67834c2ee19f192259d7f4afe0b3fbe/mountains/");
     //k.loadRoot("https://github.com/CodeGuy02/Javascript-Game-Test/tree/364b4279d67834c2ee19f192259d7f4afe0b3fbe/mountains/");
     //k.loadRoot("https://game-project-demo-01.s3.us-east.cloud-object-storage.appdomain.cloud/");
-    k.loadRoot("file:///mountains/")
-    k.loadSprite('sky', 'background_glacial_mountains.png');
+    
+    //k.loadRoot("file:///mountains/")
+    //k.loadRoot("https://game-project-demo-01.s3.us-east.cloud-object-storage.appdomain.cloud/");
+    //k.loadSprite('sky', 'background_glacial_mountains.png');
 
     // add a text at position (100, 100)
     k.add([

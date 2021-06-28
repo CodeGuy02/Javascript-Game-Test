@@ -1,5 +1,5 @@
 body {
-   background-color: green;
+   background-color: darkgreen;
 }
 
 .table {display: table;}
@@ -7,20 +7,22 @@ body {
 .cell{display: table-cell;}
 
 #mainTable {
-   background-color: black;
+   background-color: darkgreen;
    height: 100%;
    width: 100%;
 }
 
 #playField {
-   background-color: deepskyblue;
+   background-color: black;
+   border-radius: 5px;
    border: 5px solid red;
    /* padding: 5px; */
    height: 80%;
 }
 
 #controlField {
-   background-color: mediumblue;
+   background-color: darkgreen;
+   border-radius: 5px;
    border: 5px solid red;
    /* padding: 5px; */
    height: 20%;
@@ -34,16 +36,18 @@ body {
 }
 
 #startButton {
-   color: whitesmoke;
+   color: red;
    font-size: 20px; /* change button size */
+   font-family: fantasy;
+   font-style: Luminari;
    padding: 12px 28px;
    
    margin-left: 40%;
    margin-right: 40%;
   
-   background-color: dimgray;
+   background-color: lightgrey;
    border: 2px solid whitesmoke;
-   border-radius: 8px;
+   border-radius: 15px;
    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
    /*
    left: 50%;
