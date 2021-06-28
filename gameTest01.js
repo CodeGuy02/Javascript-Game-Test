@@ -45,7 +45,7 @@ k.scene("main", () => {
     // add a text at position (100, 100)
     k.add([
         k.sprite("sky"),
-        k.layer("bg"),
+        //k.layer("bg"),
         k.text("READY", 32),
         k.pos(100, 100),
     ]);
