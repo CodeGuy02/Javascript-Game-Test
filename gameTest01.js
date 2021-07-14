@@ -19,6 +19,9 @@ const k = kaboom({
     canvas:playFieldCanvas,
 });
 
+k.loadRoot("https://game-project-demo-01.s3.us-east.cloud-object-storage.appdomain.cloud/");
+k.loadSprite('sky', 'background_glacial_mountains.png');
+
 // define a scene
 k.scene("main", () => {
 
@@ -39,13 +42,15 @@ k.scene("main", () => {
     //k.loadRoot("https://game-project-demo-01.s3.us-east.cloud-object-storage.appdomain.cloud/");
     
     //k.loadRoot("file:///mountains/")
-    //k.loadRoot("https://game-project-demo-01.s3.us-east.cloud-object-storage.appdomain.cloud/");
-    //k.loadSprite('sky', 'background_glacial_mountains.png');
+    
+    const sky = k.add([  
+        sprite('sky'),
+        pos(100,100),
+    ]); 
 
     // add a text at position (100, 100)
     k.add([
-        k.sprite("sky"),
-        //k.layer("bg"),
+        k.layer("bg"),
         k.text("READY", 32),
         k.pos(100, 100),
     ]);
