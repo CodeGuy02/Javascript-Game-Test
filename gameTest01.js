@@ -109,6 +109,8 @@ k.scene("main", () => {
     const startSnowPosX = w * 1/2;
     const startSnow2PosX = startSnowPosX + (384);
 
+
+    /*
     const sky = k.add([  
         k.sprite("sky"),
         k.scale(1,1),
@@ -123,6 +125,32 @@ k.scene("main", () => {
         k.layer("bg"),
         k.pos(startSky2PosX, startSky2PosY),
     ]);
+    */
+
+    // Determine how many sky backgrounds are required using clientWidth
+    sky = 0;
+    numSkiesNeeded = Math.ceil(w / 384) + 2;
+    console.log(' ====== skies needed:' + numSkiesNeeded);
+    const skies = [];
+    lastSkyPositionX = 0;
+
+    for (i=0; i < numSkiesNeeded; i++) {
+        startNewSkyPosX = 384 * i;
+        newSky = k.add([
+            k.sprite("sky"),
+            k.scale(1,1),
+            k.origin("center"),
+            k.layer("bg"),
+            k.pos(startNewSkyPosX, startSkyPosY),
+        ]);
+        console.log('Sky ' + i + 'will have a starting position of:' + startNewSkyPosX);    
+        skies.push(newSky);
+        if (i == (numSkiesNeeded-1)) {
+            lastSkyPositionX = startNewSkyPosX;
+        }
+    }
+
+
     const cloud_lonely = k.add([
         k.sprite("cloud_lonely"),
         k.scale(1,1),
@@ -213,6 +241,7 @@ k.scene("main", () => {
     */
 
     k.loop(0.01, () => {
+        /*
         sky.move(-80,0);
         if (sky.pos.x <= (startSkyPosX - 384)) {
             // reset to starting position
@@ -224,6 +253,18 @@ k.scene("main", () => {
             // reset to starting position
             sky2.pos.x = startSky2PosX;
             console.log('x2 position is :' + sky2.pos.x);
+        }
+        */
+        for (i=0; i < skies.length; i++) {
+            sky = skies[i];
+            sky.move(-80,0);
+            sky.pos.x = Math.round(sky.pos.x);
+            if (sky.pos.x <= -384) {
+                // reset to starting position
+                console.log('sky ' + i + ' new xPos: ' + sky.pos.x);
+                sky.pos.x = lastSkyPositionX;
+                console.log('lastSkyPositionX position is :' + sky.pos.x);
+            }
         }
         cloud_lonely.move(-40,0);
         if (cloud_lonely.pos.x <= 0) {
