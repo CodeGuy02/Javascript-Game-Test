@@ -222,13 +222,13 @@ k.scene("main", () => {
     
     function spawnApple() {
 
-		// add tree obj
+		// add apple object
 		a = k.add([
 			k.sprite("apple"),
             k.scale(1.5,1.5),
             k.layer("bg"),
             k.origin("center"),
-			k.pos(600, k.rand(l/4, l*7/8)),
+			k.pos(w, k.rand(l/4, l*7/8)),
             k.area(),
 			"app",
 		]);
@@ -241,19 +241,27 @@ k.scene("main", () => {
 
 	}
 
+    k.action("app", (app) => {
+        console.log("moving apple");
+		app.move(-250, 0);
+		if (app.pos.x < 0) {
+			k.destroy(app);
+            console.log("apple destroyed!");
+		}
+	});
+
 	// start spawning trees
 	//spawnApple();
 
 	// lose if player collides with any game obj with tag "tree"
 	player.collides("app", () => {
 		// go to "lose" scene and pass the score
-		go("lose", score);
 		destroy(a);
         score += 200;
         console.log(' ????? 2');
 	});
     
-
+    
 
     k.add([
         k.layer("bg"),
@@ -309,8 +317,8 @@ k.scene("main", () => {
         sky.move(-5,0);
     });
     */
-    player.collides("apple", (apple) => {
-		destroy(key);
+    player.collides("app", (app) => {
+		destroy(app);
 		score += 1000;
 	});
     /*
