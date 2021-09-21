@@ -1,5 +1,16 @@
+var gameStarted = false;
+var gameOver = false;
+
+var player = null;
+var score = 0;
+
+const FLY_FORCE = 400;
 
 function first() {
+
+if (gameStarted) {
+    flapForYourLife();
+} else {
 
 playField = document.getElementById("playField");
 controlField = document.getElementById("controlField");
@@ -22,9 +33,12 @@ k.loadSprite("sky", "background_glacial_mountains.png");
 k.loadSprite("apple", "tomato.png");
 k.loadSprite("cloud_lonely", "cloud_lonely.png");
 k.loadSprite("snow_01", "clouds_mg_1.png");
+k.loadSprite("player", "SpeckledAngelFish_0001.png");
 
 // define a scene
 k.scene("main", () => {
+
+    k.gravity(800);
 
     // draw background on the bottom, ui on top, layer "obj" is default
     k.layers([
@@ -132,7 +146,7 @@ k.scene("main", () => {
     numSkiesNeeded = Math.ceil(w / 384) + 2;
     console.log(' ====== skies needed:' + numSkiesNeeded);
     const skies = [];
-    lastSkyPositionX = 0;
+    lastArrayItemPositionX = 0;
 
     for (i=0; i < numSkiesNeeded; i++) {
         startNewSkyPosX = 384 * i;
@@ -146,7 +160,7 @@ k.scene("main", () => {
         console.log('Sky ' + i + 'will have a starting position of:' + startNewSkyPosX);    
         skies.push(newSky);
         if (i == (numSkiesNeeded-1)) {
-            lastSkyPositionX = startNewSkyPosX;
+            lastArrayItemPositionX = startNewSkyPosX;
         }
     }
 
@@ -172,7 +186,17 @@ k.scene("main", () => {
         k.layer("bg"),
         k.pos(startSnow2PosX, l*8/10),
     ]);
+    player = k.add([
+        k.sprite("player"),
+        k.scale(0.2,0.2),
+        k.origin("center"),
+        k.layer("obj"),
+        k.pos(w*1/4,l*1/4),
+        k.area(),
+        k.body(),
+    ]);
 
+    /*
     const numApples = 4;
     const appleBasket = Array(numApples);
     const appleDistance = 180;
@@ -187,9 +211,49 @@ k.scene("main", () => {
             k.origin("center"),
             k.layer("obj"),
             k.pos(w + (i*appleDistance), startPosY),
+            k.area(),
+            "apple",
         ]);   
     }
     //k.loadRoot("file:///mountains/")
+
+    */
+
+    
+    function spawnApple() {
+
+		// add tree obj
+		a = k.add([
+			k.sprite("apple"),
+            k.scale(1.5,1.5),
+            k.layer("bg"),
+            k.origin("center"),
+			k.pos(600, k.rand(l/4, l*7/8)),
+            k.area(),
+			"app",
+		]);
+
+        //a.move(k.LEFT, 1);
+
+		// wait a random amount of time to spawn next tree
+		//k.wait(k.rand(0.5, 1.5), spawnApple);
+        console.log('  ????? 1 x: ' + a.pos.x + ' y: ' + a.pos.y);
+
+	}
+
+	// start spawning trees
+	//spawnApple();
+
+	// lose if player collides with any game obj with tag "tree"
+	player.collides("app", () => {
+		// go to "lose" scene and pass the score
+		go("lose", score);
+		destroy(a);
+        score += 200;
+        console.log(' ????? 2');
+	});
+    
+
 
     k.add([
         k.layer("bg"),
@@ -199,33 +263,45 @@ k.scene("main", () => {
     ]);
 
     // add a text at position (100, 100)
-    k.add([
+    const scoreLabel = k.add([
         k.layer("bg"),
         //k.text("READY", 32),
-        k.text("Score: 00000", 12),
+        k.text("Score: " + score, 14),
         k.pos(30, 60),
     ]);
 
     k.add([
         k.layer("bg"),
-        k.text("High Score: 25000", 12),
+        k.text("High Score: 25000", 16),
         k.color(1,0.5,0.3),
         k.pos(30, 40),
     ]);
 
     //var appleCounter = 0;
     k.loop(0.01, () => {
+        if (gameOver == false) {
+            score++;
+            if (score % 100 == 0) {
+                spawnApple();
+            }
+        }
+
+    
+        scoreLabel.text = "Score: " + score;
+
+        /*
         //console.log('apple loop');
         for (i=0; i < numApples; i++) {
-            appleBasket[i].move(-120,0);
+            appleBasket[i].move(-220,0);
             appleBasket[i].angle += 10;
             if (appleBasket[i].pos.x <= (0)) {
                 // reset to starting position
                 appleBasket[i].pos.x = w + appleDistance;
                 appleBasket[i].pos.y = k.rand(l*1/2, l*8/10);
-                console.log('Resetting apple position.');
+                //console.log('Resetting apple position.');
         }
         }
+        */
     });
 
     /*
@@ -233,7 +309,10 @@ k.scene("main", () => {
         sky.move(-5,0);
     });
     */
-
+    player.collides("apple", (apple) => {
+		destroy(key);
+		score += 1000;
+	});
     /*
     k.wait(1, () => {
         sky.pos.x = sky.pos.x - 10;
@@ -241,6 +320,8 @@ k.scene("main", () => {
     */
 
     k.loop(0.01, () => {
+
+
         /*
         sky.move(-80,0);
         if (sky.pos.x <= (startSkyPosX - 384)) {
@@ -256,14 +337,55 @@ k.scene("main", () => {
         }
         */
         for (i=0; i < skies.length; i++) {
+            
             sky = skies[i];
             sky.move(-80,0);
             sky.pos.x = Math.round(sky.pos.x);
+
+            if ( (!isNaN(skies[i-1]) ) ) {
+                if (i-1 == -1) {
+                    previousSky = skies[skies.length - 1];
+                } else
+                {
+                    previousSky = skies[i-1];
+                }
+                    if ( (sky.pos.x - (previousSky.pos.x + 384) ) != 1 ) {
+                        console.log('i-1=' + i-1 + ' pos= ' + previousSky.pos.x + 384);
+                        console.log('i=' + i + ' pos=' + sky.pos.x);
+                        sky.pos.x = previousSky.pos.x + 1;
+                        
+                    }
+                    console.log(' ** fixed : ' + i + ' and ' + (i - 1));
+                
+            }
+
+            /*
+            if (( (sky.pos.x) > w) && ( (skies[i]) < (w+40))) {
+                
+                if (skies[i + 1]) {
+                    currentFarRightSkyPos = sky.pos.x + 384;
+                    nextLeftSkyPos = skies[i + 1].pos.x;
+                    if ((nextLeftSkyPos - currentFarRightSkyPos ) != 1) {
+                        skies[i+1].pos.x = currentFarRightSkyPos + 1;
+                        console.log(' ** fixed : ' + i + ' and ' + (i + 1));
+                    }
+                } 
+                
+            }
+            */
+            
             if (sky.pos.x <= -384) {
                 // reset to starting position
+                if (sky.pos.x < -384) {
+                    sky.pos.x = -384;
+                }
+                if (i === 0) {
+                    console.log('------------------------');
+                }
                 console.log('sky ' + i + ' new xPos: ' + sky.pos.x);
-                sky.pos.x = lastSkyPositionX;
-                console.log('lastSkyPositionX position is :' + sky.pos.x);
+                sky.pos.x = lastArrayItemPositionX;
+                console.log('lastArrayItemPositionX position is :' + sky.pos.x);
+                
             }
         }
         cloud_lonely.move(-40,0);
@@ -278,6 +400,32 @@ k.scene("main", () => {
         if (snow_02.pos.x <= (startSnowPosX)) {
             snow_02.pos.x = startSnow2PosX;
         } 
+
+        if (player.pos.y >= l) {
+
+            if (gameStarted) {
+                if (w > 667) {
+                    k.add([
+                        k.layer("bg"),
+                        k.text("Game Over", 26),
+                        k.color(1,0.5,0.3),
+                        k.pos(w/3, l/2),
+                    ]);
+                } else {
+                    k.add([
+                        k.layer("bg"),
+                        k.text("Game Over", 26),
+                        k.color(1,0.5,0.3),
+                        k.pos(w/5, l/2),
+                    ]);
+                }
+
+                gameStarted = false;
+                gameOver = true;
+                console.log(">>>>>>> gameStarted now false");
+            }            
+        }
+
         //console.log("just like setInterval");
     });
 
@@ -286,9 +434,24 @@ k.scene("main", () => {
     sky.pos.x
     */
 
-});
+}); // end k.scene(...)
 
 // start the game
 k.start("main");
+gameStarted = true;
+console.log(">>>>>>> game has started");
+
+} // this section ends setting up and starting the game
+
+} // end first()
+
+
+function flapForYourLife() {
+    try {
+        player.jump(FLY_FORCE);
+        console.log("flapping");
+    } catch {
+        console.log("player object not found!")
+    }
 
 }
